@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: adservice-deployment
+  namespace: default
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: adservice
+  template:
+    metadata:
+      labels:
+        app: adservice
+    spec:
+      containers:
+      - name: adservice
+        image: https://github.com/marcbal/win-server-project/tree/main/projet-fil-rouge-neosoft/adservice
+      ports:
+      - containerPort: 9555
+      resources:
+        limits:
+          memory: "128Mi"
+          cpu: "500m"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: adservice-service
+spec:
+  selector:
+    app: adservice
+  type: ClusterIP
+  ports:
+  - port: 9555  
+    targetPort: 9555

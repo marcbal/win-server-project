@@ -1,0 +1,42 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: paymentservice-deployment
+  namespace: default
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: paymentservice
+  template:
+    metadata:
+      labels:
+        app: paymentservice
+    spec:
+      containers:
+      - name: paymentservice
+        image: https://github.com/marcbal/win-server-project/tree/main/projet-fil-rouge-neosoft/paymentservice
+        env:
+        - name: PORT
+          valueFrom:
+            configMapKeyRef:
+              name: paymentservice-configmap  
+              key: PORT
+        ports:
+        - containerPort: 50051
+        resources:
+          limits:
+            memory: "128Mi"
+            cpu: "500m"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: paymentservice-service
+spec:
+  selector:
+    app: paymentservice
+  type: ClusterIP
+  ports:
+  - port: 50051 
+    targetPort: 50051

@@ -1,0 +1,72 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: currency-deployment
+  namespace: default
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: currencyservice
+  template:
+    metadata:
+      labels:
+        app: currencyservice
+    spec:
+      containers:
+      - name: currencyservice
+        image: https://github.com/marcbal/win-server-project/tree/main/projet-fil-rouge-neosoft/currencyservice
+        env:
+        - name: PORT
+          valueFrom:
+            configMapKeyRef:
+              name: currencyservice-configmap  
+              key: PORT
+      ports:
+      - containerPort: 7000
+        resources:
+          limits:
+            memory: "128Mi"
+            cpu: "500m"
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: emailservice-deployment
+  namespace: default
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: emailservice
+  template:
+    metadata:
+      labels:
+        app: emailservice
+    spec:
+      containers:
+      - name: emailservice
+        image: https://github.com/marcbal/win-server-project/tree/main/projet-fil-rouge-neosoft/emailservice
+        - name: ASPNETCORE_URLS
+          valueFrom:
+            configMapKeyRef:
+              name: emailservice-configmap  
+              key: PORT
+        ports:
+        - containerPort: 8000
+        resources:
+          limits:
+            memory: "128Mi"
+            cpu: "500m"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: currencyservice-service
+spec:
+  selector:
+    app: currencyservice
+  type: ClusterIP
+  ports:
+  - port: 7000
+    targetPort: 7000

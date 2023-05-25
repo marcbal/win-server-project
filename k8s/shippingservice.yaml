@@ -1,0 +1,42 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: shippingservice-deployment
+  namespace: default
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: shippingservice
+  template:
+    metadata:
+      labels:
+        app: shippingservice
+    spec:
+      containers:
+      - name: shippingservice
+        image: https://github.com/marcbal/win-server-project/tree/main/projet-fil-rouge-neosoft/shippingservice
+        env:
+        - name: PORT
+          valueFrom:
+            configMapKeyRef:
+              name: shippingservice-configmap  
+              key: PORT
+        ports:
+        - containerPort: 50051
+        resources:
+          limits:
+            memory: "128Mi"
+            cpu: "500m"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: shippingservice-service
+spec:
+  selector:
+    app: shippingservice
+  type: ClusterIP
+  ports:
+  - port: 50051 
+    targetPort: 50051

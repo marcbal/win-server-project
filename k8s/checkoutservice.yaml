@@ -1,0 +1,78 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: checkoutservice-deployment
+  namespace: default
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: checkoutservice
+  template:
+    metadata:
+      labels:
+        app: checkoutservice
+    spec:
+      containers:
+      - name: checkoutservice
+        image: https://github.com/marcbal/win-server-project/tree/main/projet-fil-rouge-neosoft/checkoutservice
+        env:
+        - name: GRPC_HEALTH_PROBE_VERSION
+          valueFrom:
+            configMapKeyRef:
+              name: checkoutservice-configmap  
+              key: GRPC_HEALTH_PROBE_VERSION
+        - name: GOTRACEBACK
+          valueFrom:
+            configMapKeyRef:
+              name: checkoutservice-configmap  
+              key: GOTRACEBACK
+        - name: PRODUCT_CATALOG_SERVICE_ADDR
+          valueFrom:
+            configMapKeyRef:
+              name: checkoutservice-configmap  
+              key: PRODUCT_CATALOG_SERVICE_ADDR
+        - name: SHIPPING_SERVICE_ADDR
+          valueFrom:
+            configMapKeyRef:
+              name: checkoutservice-configmap  
+              key: SHIPPING_SERVICE_ADDR
+        - name: CART_SERVICE_ADDR
+          valueFrom:
+            configMapKeyRef:
+              name: checkoutservice-configmap  
+              key: CART_SERVICE_ADDR
+        - name: CURRENCY_SERVICE_ADDR
+          valueFrom:
+            configMapKeyRef:
+              name: checkoutservice-configmap  
+              key: CURRENCY_SERVICE_ADDR
+        - name: EMAIL_SERVICE_ADDR
+          valueFrom:
+            configMapKeyRef:
+              name: checkoutservice-configmap  
+              key: EMAIL_SERVICE_ADDR
+        - name: PAYMENT_SERVICE_ADDR
+          valueFrom:
+            configMapKeyRef:
+              name: checkoutservice-configmap  
+              key: PAYMENT_SERVICE_ADDR
+        ports:
+        - containerPort: 5050
+          resources:
+            limits:
+              memory: "128Mi"
+              cpu: "500m"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: checkoutservice-service
+spec:
+  selector:
+    app: checkoutservice
+  type: ClusterIP
+  ports:
+  - port: 5050
+    targetPort: 5050
+---

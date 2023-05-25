@@ -1,0 +1,42 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cartservice-deployment
+  namespace: default
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: cartservice
+  template:
+    metadata:
+      labels:
+        app: cartservice
+    spec:
+      containers:
+      - name: cartservice
+        image: https://github.com/marcbal/win-server-project/tree/main/projet-fil-rouge-neosoft/cartservice
+        env:
+        - name: ASPNETCORE_URLS
+          valueFrom:
+            configMapKeyRef:
+              name: cartservice-configmap  
+              key: ASPNETCORE_URLS
+        ports:
+        - containerPort: 7070
+        resources:
+          limits:
+            memory: "128Mi"
+            cpu: "500m"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: cartservice-service
+spec:
+  selector:
+    app: cartservice
+  type: ClusterIP
+  ports:
+  - port: 7070
+    targetPort: 7070

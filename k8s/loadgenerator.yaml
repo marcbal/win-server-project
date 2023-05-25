@@ -1,0 +1,42 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: loadgenerator-deployment
+  namespace: default
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: loadgenerator
+  template:
+    metadata:
+      labels:
+        app: loadgenerator
+    spec:
+      containers:
+      - name: loadgenerator
+        image: https://github.com/marcbal/win-server-project/tree/main/projet-fil-rouge-neosoft/loadgenerator
+        env:
+        - name: FRONTEND_ADDR
+          valueFrom:
+            configMapKeyRef:
+              name: loadgenerator-configmap  
+              key: FRONTEND_ADDR
+        ports:
+        - containerPort: 80
+        resources:
+          limits:
+            memory: "128Mi"
+            cpu: "500m"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: loadgenerator-service
+spec:
+  selector:
+    app: loadgenerator
+  type: ClusterIP
+  ports:
+  - port: 
+    targetPort: 
