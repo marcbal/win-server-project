@@ -17,52 +17,52 @@ spec:
       - name: checkoutservice
         image: https://github.com/marcbal/win-server-project/tree/main/projet-fil-rouge-neosoft/checkoutservice
         env:
-        - name: GRPC_HEALTH_PROBE_VERSION
-          valueFrom:
-            configMapKeyRef:
-              name: checkoutservice-configmap  
-              key: GRPC_HEALTH_PROBE_VERSION
-        - name: GOTRACEBACK
-          valueFrom:
-            configMapKeyRef:
-              name: checkoutservice-configmap  
-              key: GOTRACEBACK
+        # - name: GRPC_HEALTH_PROBE_VERSION
+        #   valueFrom:
+        #     configMapKeyRef:
+        #       name: environment-configmap  
+        #       key: GRPC_HEALTH_PROBE_VERSION
+        # - name: GOTRACEBACK
+        #   valueFrom:
+        #     configMapKeyRef:
+        #       name: environment-configmap  
+        #       key: GOTRACEBACK
         - name: PRODUCT_CATALOG_SERVICE_ADDR
           valueFrom:
             configMapKeyRef:
-              name: checkoutservice-configmap  
+              name: environment-configmap  
               key: PRODUCT_CATALOG_SERVICE_ADDR
         - name: SHIPPING_SERVICE_ADDR
           valueFrom:
             configMapKeyRef:
-              name: checkoutservice-configmap  
+              name: environment-configmap  
               key: SHIPPING_SERVICE_ADDR
         - name: CART_SERVICE_ADDR
           valueFrom:
             configMapKeyRef:
-              name: checkoutservice-configmap  
+              name: environment-configmap  
               key: CART_SERVICE_ADDR
         - name: CURRENCY_SERVICE_ADDR
           valueFrom:
             configMapKeyRef:
-              name: checkoutservice-configmap  
+              name: environment-configmap  
               key: CURRENCY_SERVICE_ADDR
         - name: EMAIL_SERVICE_ADDR
           valueFrom:
             configMapKeyRef:
-              name: checkoutservice-configmap  
+              name: environment-configmap  
               key: EMAIL_SERVICE_ADDR
         - name: PAYMENT_SERVICE_ADDR
           valueFrom:
             configMapKeyRef:
-              name: checkoutservice-configmap  
+              name: environment-configmap  
               key: PAYMENT_SERVICE_ADDR
         ports:
         - containerPort: 5050
-          resources:
-            limits:
-              memory: "128Mi"
-              cpu: "500m"
+        resources:
+          limits:
+            memory: "128Mi"
+            cpu: "500m"
 ---
 apiVersion: v1
 kind: Service

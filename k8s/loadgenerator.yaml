@@ -20,23 +20,9 @@ spec:
         - name: FRONTEND_ADDR
           valueFrom:
             configMapKeyRef:
-              name: loadgenerator-configmap  
+              name: environment-configmap  
               key: FRONTEND_ADDR
-        ports:
-        - containerPort: 80
         resources:
           limits:
             memory: "128Mi"
             cpu: "500m"
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: loadgenerator-service
-spec:
-  selector:
-    app: loadgenerator
-  type: ClusterIP
-  ports:
-  - port: 
-    targetPort: 

@@ -15,13 +15,13 @@ spec:
     spec:
       containers:
       - name: cartservice
-        image: https://github.com/marcbal/win-server-project/tree/main/projet-fil-rouge-neosoft/cartservice
+        image: https://github.com/marcbal/win-server-project/tree/main/projet-fil-rouge-neosoft/cartservice/src
         env:
-        - name: ASPNETCORE_URLS
+        - name: REDIS_ADDR
           valueFrom:
             configMapKeyRef:
-              name: cartservice-configmap  
-              key: ASPNETCORE_URLS
+              name: environment-configmap  
+              key: REDIS_ADDR
         ports:
         - containerPort: 7070
         resources:

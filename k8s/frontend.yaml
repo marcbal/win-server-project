@@ -20,45 +20,45 @@ spec:
         - name: PRODUCT_CATALOG_SERVICE_ADDR
           valueFrom:
             configMapKeyRef:
-              name: frontend-configmap  
+              name: environment-configmap  
               key: PRODUCT_CATALOG_SERVICE_ADDR
         - name: SHIPPING_SERVICE_ADDR
           valueFrom:
             configMapKeyRef:
-              name: frontend-configmap  
+              name: environment-configmap  
               key: SHIPPING_SERVICE_ADDR
         - name: CART_SERVICE_ADDR
           valueFrom:
             configMapKeyRef:
-              name: frontend-configmap  
+              name: environment-configmap  
               key: CART_SERVICE_ADDR
         - name: CURRENCY_SERVICE_ADDR
           valueFrom:
             configMapKeyRef:
-              name: frontend-configmap  
+              name: environment-configmap  
               key: CURRENCY_SERVICE_ADDR
         - name: CHECKOUT_SERVICE_ADDR
           valueFrom:
             configMapKeyRef:
-              name: frontend-configmap  
+              name: environment-configmap  
               key: CHECKOUT_SERVICE_ADDR
         - name: RECOMMENDATION_SERVICE_ADDR
           valueFrom:
             configMapKeyRef:
-              name: frontend-configmap  
+              name: environment-configmap  
               key: RECOMMENDATION_SERVICE_ADDR
         - name: AD_SERVICE_ADDR
           valueFrom:
             configMapKeyRef:
-              name: frontend-configmap  
+              name: environment-configmap  
               key: AD_SERVICE_ADDR
         - name: PORT
           valueFrom:
             configMapKeyRef:
-              name: frontend-configmap  
-              key: PORT
-      ports:
-      - containerPort: 8080
+              name: environment-configmap  
+              key: FRONTEND_PORT
+        ports:
+        - containerPort: 8080
         resources:
           limits:
             memory: "128Mi"
@@ -67,11 +67,23 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: frontend-service
+  name: frontend-external-service
 spec:
   selector:
     app: frontend
   type: NodePort
   ports:
-  - port: 8080
+  - port: 80
+    targetPort: 8080
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: frontend-service
+spec:
+  selector:
+    app: frontend
+  type: ClusterIP
+  ports:
+  - port: 80
     targetPort: 8080

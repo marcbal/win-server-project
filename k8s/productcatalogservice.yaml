@@ -20,8 +20,8 @@ spec:
         - name: PORT
           valueFrom:
             configMapKeyRef:
-              name: productcatalogueservice-configmap  
-              key: PORT
+              name: environment-configmap  
+              key: PRODUCT_CATALOG_SERVICE_PORT
         ports:
         - containerPort: 3550
         resources:

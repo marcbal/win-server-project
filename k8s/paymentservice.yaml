@@ -20,8 +20,8 @@ spec:
         - name: PORT
           valueFrom:
             configMapKeyRef:
-              name: paymentservice-configmap  
-              key: PORT
+              name: environment-configmap
+              key: PAYMENT_SERVICE_PORT
         ports:
         - containerPort: 50051
         resources:
@@ -38,5 +38,5 @@ spec:
     app: paymentservice
   type: ClusterIP
   ports:
-  - port: 50051 
+  - port: 50052 
     targetPort: 50051

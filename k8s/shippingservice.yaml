@@ -20,8 +20,8 @@ spec:
         - name: PORT
           valueFrom:
             configMapKeyRef:
-              name: shippingservice-configmap  
-              key: PORT
+              name: environment-configmap  
+              key: SHIPPING_SERVICE_PORT
         ports:
         - containerPort: 50051
         resources:

@@ -16,12 +16,18 @@ spec:
       containers:
       - name: adservice
         image: https://github.com/marcbal/win-server-project/tree/main/projet-fil-rouge-neosoft/adservice
-      ports:
-      - containerPort: 9555
-      resources:
-        limits:
-          memory: "128Mi"
-          cpu: "500m"
+        env:
+        - name: PORT
+          valueFrom:
+            configMapKeyRef:
+              name: environment-configmap  
+              key: ADSERVICE_PORT
+        ports:
+        - containerPort: 9555
+        resources:
+          limits:
+            memory: "128Mi"
+            cpu: "500m"
 ---
 apiVersion: v1
 kind: Service

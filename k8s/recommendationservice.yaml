@@ -20,12 +20,12 @@ spec:
         - name: PORT
           valueFrom:
             configMapKeyRef:
-              name: recommendationservice-configmap  
-              key: PORT
+              name: environment-configmap
+              key: RECOMMANTATION_SERVICE_PORT
         - name: PRODUCT_CATALOG_SERVICE_ADDR
           valueFrom:
             configMapKeyRef:
-              name: recommendationservice-configmap  
+              name: environment-configmap  
               key: PRODUCT_CATALOG_SERVICE_ADDR
         ports:
         - containerPort: 8080
