@@ -1,64 +1,28 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: frontend-deployment
+  name: emailservice-deployment
   namespace: default
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: frontend
+      app: emailservice
   template:
     metadata:
       labels:
-        app: frontend
+        app: emailservice
     spec:
       containers:
-      - name: frontend
-        image: https://github.com/marcbal/win-server-project/tree/main/projet-fil-rouge-neosoft/frontend
-        env:
-        - name: PRODUCT_CATALOG_SERVICE_ADDR
+      - name: emailservice
+        image: https://github.com/marcbal/win-server-project/tree/main/projet-fil-rouge-neosoft/emailservice
+        - name: ASPNETCORE_URLS
           valueFrom:
             configMapKeyRef:
-              name: frontend-configmap  
-              key: PRODUCT_CATALOG_SERVICE_ADDR
-        - name: SHIPPING_SERVICE_ADDR
-          valueFrom:
-            configMapKeyRef:
-              name: frontend-configmap  
-              key: SHIPPING_SERVICE_ADDR
-        - name: CART_SERVICE_ADDR
-          valueFrom:
-            configMapKeyRef:
-              name: frontend-configmap  
-              key: CART_SERVICE_ADDR
-        - name: CURRENCY_SERVICE_ADDR
-          valueFrom:
-            configMapKeyRef:
-              name: frontend-configmap  
-              key: CURRENCY_SERVICE_ADDR
-        - name: CHECKOUT_SERVICE_ADDR
-          valueFrom:
-            configMapKeyRef:
-              name: frontend-configmap  
-              key: CHECKOUT_SERVICE_ADDR
-        - name: RECOMMENDATION_SERVICE_ADDR
-          valueFrom:
-            configMapKeyRef:
-              name: frontend-configmap  
-              key: RECOMMENDATION_SERVICE_ADDR
-        - name: AD_SERVICE_ADDR
-          valueFrom:
-            configMapKeyRef:
-              name: frontend-configmap  
-              key: AD_SERVICE_ADDR
-        - name: PORT
-          valueFrom:
-            configMapKeyRef:
-              name: frontend-configmap  
+              name: emailservice-configmap  
               key: PORT
-      ports:
-      - containerPort: 8080
+        ports:
+        - containerPort: 8000
         resources:
           limits:
             memory: "128Mi"
