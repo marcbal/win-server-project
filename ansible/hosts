@@ -1,0 +1,11 @@
+[jenkins]
+10.10.10.3 ansible_user=jenkins
+
+[dc0]
+10.10.10.10
+
+[dcchild]
+10.10.10.11
+
+[kubernetes]
+10.10.10.12
