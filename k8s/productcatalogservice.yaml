@@ -1,34 +1,29 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: recommendationservice-deployment
+  name: productcatalogueservice-deployment
   namespace: default
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: recommendationservice
+      app: productcatalogueservice
   template:
     metadata:
       labels:
-        app: recommendationservice
+        app: productcatalogueservice
     spec:
       containers:
-      - name: recommendationservice
-        image: https://github.com/marcbal/win-server-project/tree/main/projet-fil-rouge-neosoft/recommendationservice
+      - name: productcatalogueservice
+        image: https://github.com/marcbal/win-server-project/tree/main/projet-fil-rouge-neosoft/productcatalogservice
         env:
         - name: PORT
           valueFrom:
             configMapKeyRef:
-              name: recommendationservice-configmap  
+              name: productcatalogueservice-configmap  
               key: PORT
-        - name: PRODUCT_CATALOG_SERVICE_ADDR
-          valueFrom:
-            configMapKeyRef:
-              name: recommendationservice-configmap  
-              key: PRODUCT_CATALOG_SERVICE_ADDR
         ports:
-        - containerPort: 8080
+        - containerPort: 3550
         resources:
           limits:
             memory: "128Mi"
