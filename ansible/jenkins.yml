@@ -1,6 +1,20 @@
 ---
-- name: Install Jenkins
+- name: Setup Jenkins server
   hosts: jenkins
   become: true
   roles:
     - jenkins
+
+  tasks:
+    - name: Get kubectl last stable version
+      ansible.builtin.uri:
+        url: "https://dl.k8s.io/release/stable.txt"
+        method: "GET"
+        return_content: true
+      register: kubectl_version
+
+    - name: Download kubectl
+      ansible.builtin.get_url:
+        url: "https://dl.k8s.io/release/{{ kubectl_version.content }}/bin/linux/amd64/kubectl"
+        dest: /usr/local/bin/kubectl
+        mode: "+x"

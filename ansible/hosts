@@ -2,10 +2,10 @@
 10.10.10.3 ansible_user=jenkins
 
 [dc0]
-10.10.10.10
+10.10.10.10 ansible_connection=winrm ansible_winrm_scheme=http ansible_port=5985 ansible_winrm_transport=ntlm ansible_user=Administrateur ansible_password=Duffman.60
 
 [dcchild]
-10.10.10.11
+10.10.10.11 ansible_connection=winrm ansible_winrm_scheme=http ansible_port=5985 ansible_winrm_transport=ntlm ansible_user=Administrateur ansible_password=Duffman.60
 
 [kubernetes]
-10.10.10.12
+10.10.10.12 ansible_connection=winrm ansible_winrm_scheme=http ansible_port=5985 ansible_winrm_transport=ntlm ansible_user=kubernetes ansible_password=k

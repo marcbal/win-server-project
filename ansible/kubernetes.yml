@@ -1,0 +1,8 @@
+---
+- name: Install Kubernetes
+  hosts: kubernetes
+  become: true
+  become_method: runas
+  become_user: kubernetes
+  roles:
+    - minikube_win

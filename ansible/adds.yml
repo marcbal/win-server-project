@@ -1,0 +1,91 @@
+---
+- name: Install DC0 ADDS server
+  hosts: dc0
+  tasks:
+
+    # https://madlabber.wordpress.com/2019/09/08/creating-a-new-active-directory-forest-with-ansible/
+
+    # - name: Set upstream DNS server
+    #   ansible.windows.win_dns_client:
+    #     adapter_names: '*'
+    #     ipv4_addresses:
+    #       - '8.8.8.8'
+
+    - name: Disable firewall for Domain, Public and Private profiles
+      community.windows.win_firewall:
+        state: disabled
+        profiles:
+          - Domain
+          - Private
+          - Public
+      tags: disable_firewall
+
+    - name: Change the hostname
+      ansible.windows.win_hostname:
+        name: 'DC0'
+      register: res
+
+    - name: Reboot
+      ansible.windows.win_reboot:
+      when: res.reboot_required
+
+    - name: Install Active Directory
+      ansible.windows.win_feature:
+        name: AD-Domain-Services
+        include_management_tools: true
+        include_sub_features: true
+        state: present
+
+    - name: Create Domain
+      ansible.windows.win_domain:
+        dns_domain_name: formation.fr
+        safe_mode_password: Duffman.60
+      register: ad
+
+    - name: Reboot again
+      ansible.windows.win_reboot:
+        msg: "Installing AD. Rebooting..."
+        pre_reboot_delay: 15
+        reboot_timeout: 600 # ça peut prendre beaucoup de temps
+      when: ad.reboot_required
+
+    # - name: Install ADDS role
+    #   ansible.windows.win_feature:
+    #     name: RSAT-ADDS
+    #     include_sub_features: true
+    #     include_management_tools: true
+    #     state: present
+
+    # - name: Install DNS role
+    #   ansible.windows.win_feature:
+    #     name: DNS
+    #     state: present
+
+    # - name: Install ADDS tools
+    #   ansible.windows.win_feature:
+    #     name: RSAT-AD-Tools
+    #     state: present
+
+    # - name: Install DNS tools
+    #   ansible.windows.win_feature:
+    #     name: RSAT-DNS-Server
+    #     state: present
+
+    # - name: Create the domain
+    #   ansible.windows.win_domain:
+    #     dns_domain_name: formation.fr
+    #     safe_mode_password: Duffman.60
+    #   register: dc_creation
+
+    # - name: Reboot after promotion
+    #   ansible.windows.win_reboot:
+    #     pre_reboot_delay: 15
+    #   when: dc_creation.reboot_required
+
+    # - name: Promote server to Domain Controller
+    #   ansible.windows.win_domain_controller:
+    #     dns_domain_name: formation.fr
+    #     domain_admin_user: Admnistrateur@formation.fr
+    #     domain_admin_password: Duffman.60
+    #     safe_mode_password: Duffman.60
+    #     state: domain_controller

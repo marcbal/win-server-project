@@ -1,0 +1,68 @@
+---
+# tasks file for jenkins
+
+# https://github.com/jonashackt/ansible-windows-docker-springboot/tree/master/step1-prepare-docker-windows
+# - name: Check Windows Feature Containers
+#   win_shell: Get-WindowsOptionalFeature -Online –FeatureName Containers | Where State -CContains "Enabled"
+#   register: check_feature_container_installed
+
+# - name: Install Windows Feature Containers
+#   win_shell: Enable-WindowsOptionalFeature -Online -FeatureName containers -All -NoRestart
+#   when: check_feature_container_installed.stdout == ''
+#   ignore_errors: true
+#   register: feature_container_installation
+
+- name: Check Windows Feature Hyper-V
+  win_shell: Get-WindowsOptionalFeature -Online –FeatureName Microsoft-Hyper-V | Where State -CContains "Enabled"
+  register: check_feature_hyperv_installed
+
+- name: Install Windows Feature Hyper-V 
+  win_shell: Enable-WindowsOptionalFeature -Online -FeatureName Microsoft-Hyper-V -All -NoRestart
+  when: check_feature_hyperv_installed.stdout == ''
+  ignore_errors: true
+  register: feature_hyperv_installation
+
+# - name: Check Windows Feature Hypervisor platform
+#   win_shell: Get-WindowsOptionalFeature -Online –FeatureName HypervisorPlatform | Where State -CContains "Enabled"
+#   register: check_feature_hypervisorplatform_installed
+
+# - name: Install Windows Feature Hypervisor platform
+#   win_shell: Enable-WindowsOptionalFeature -Online -FeatureName HypervisorPlatform -All -NoRestart
+#   when: check_feature_hypervisorplatform_installed.stdout == ''
+#   ignore_errors: true
+#   register: feature_hypervisorplatform_installation
+
+
+- name: Reboot after feature installation
+  win_reboot:
+    pre_reboot_delay: 10
+    reboot_timeout: 120
+    post_reboot_delay: 60
+  when: feature_hyperv_installation.changed
+  # when: feature_container_installation.changed or feature_hyperv_installation.changed or feature_hypervisorplatform_installation.changed
+
+
+- name: Install Minikube
+  chocolatey.chocolatey.win_chocolatey:
+    name: minikube
+    state: present
+
+- name: Install Kubectl
+  chocolatey.chocolatey.win_chocolatey:
+    name: kubernetes-cli
+    state: present
+
+- name: Remove eventual previous minikube installation
+  become: true
+  ansible.windows.win_command:
+    cmd: minikube delete
+
+- name: Create public virtual switch for minikube to be accessible from the network
+  become: true
+  ansible.windows.win_shell: New-VMSwitch -Name minikube -NetAdapterName Ethernet
+  ignore_errors: true
+
+- name: Start Minikube with Hyperv driver
+  become: true
+  ansible.windows.win_command:
+    cmd: minikube start --driver=hyperv --cpus=6 --memory=4g
