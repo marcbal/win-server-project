@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
       - name: emailservice
-        image: https://github.com/marcbal/win-server-project/tree/main/projet-fil-rouge-neosoft/emailservice
+        image: mohamed1780/emailservice:latest
         env:
         - name: PORT
           valueFrom:

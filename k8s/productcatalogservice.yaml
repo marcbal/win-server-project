@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
       - name: productcatalogueservice
-        image: https://github.com/marcbal/win-server-project/tree/main/projet-fil-rouge-neosoft/productcatalogservice
+        image: mohamed1780/productcatalog:latest
         env:
         - name: PORT
           valueFrom:

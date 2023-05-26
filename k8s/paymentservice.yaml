@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
       - name: paymentservice
-        image: https://github.com/marcbal/win-server-project/tree/main/projet-fil-rouge-neosoft/paymentservice
+        image: mohamed1780/paymentservice:latest
         env:
         - name: PORT
           valueFrom:

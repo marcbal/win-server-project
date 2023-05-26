@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
       - name: recommendationservice
-        image: https://github.com/marcbal/win-server-project/tree/main/projet-fil-rouge-neosoft/recommendationservice
+        image: mohamed1780/recommandservice:latest
         env:
         - name: PORT
           valueFrom:

@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
       - name: loadgenerator
-        image: https://github.com/marcbal/win-server-project/tree/main/projet-fil-rouge-neosoft/loadgenerator
+        image: mohamed1780/loadgenerator:latest
         env:
         - name: FRONTEND_ADDR
           valueFrom:

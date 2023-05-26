@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
       - name: checkoutservice
-        image: https://github.com/marcbal/win-server-project/tree/main/projet-fil-rouge-neosoft/checkoutservice
+        image: mohamed1780/checkoutservice:latest
         env:
         # - name: GRPC_HEALTH_PROBE_VERSION
         #   valueFrom:

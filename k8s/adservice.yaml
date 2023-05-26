@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
       - name: adservice
-        image: https://github.com/marcbal/win-server-project/tree/main/projet-fil-rouge-neosoft/adservice
+        image: mohamed1780/adservice:latest
         env:
         - name: PORT
           valueFrom:
